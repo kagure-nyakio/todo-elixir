@@ -23,7 +23,7 @@ defmodule TodoListImplTest do
     ])
     
     todolist = Todo.add_entry(todolist, %{date: ~D[2018-12-19], title: "Movies"})
-    assert map_size(todolist) === 3
+    assert map_size(todolist.entries) === 3
   end
 
   test "an entry is recoverable from the todo list" do

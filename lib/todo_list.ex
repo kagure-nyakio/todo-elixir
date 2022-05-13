@@ -1,25 +1,23 @@
 defmodule TodoList do
+  alias TodoList.Runtime.TodoServer
+  
+  use GenServer
 
-  alias TodoList.Runtime.TodoGenServ, as: MyServer
-  alias TodoList.Runtime.GenServ
+  defdelegate new, to: TodoServer, as: :start 
 
-  def new() do
-    MyServer.start()
+  def add_entry(entry) do
+    GenServer.cast(:todo_server, {:add_entry, entry})
   end
 
-  def add_entry(server_pid, entry) do
-    GenServ.cast(server_pid, {:add_entry, entry})
+  def entries(date) do
+    GenServer.call(:todo_server, {:get_entries, date})
   end
 
-  def entries(server_pid, date) do
-    GenServ.call(server_pid, {:get_entries, date})
+  def update_entry(entry_id, updater_fun) do
+    GenServer.cast(:todo_server, {:update_entry, entry_id, updater_fun})
   end
 
-  def update_entry(server_pid, entry_id, updater_fun) do
-    GenServ.cast(server_pid, {:update_entry, entry_id, updater_fun})
-  end
-
-  def delete_entry(server_pid, entry_id) do
-    GenServ.cast(server_pid, {:delete_entry, entry_id})
+  def delete_entry(entry_id) do
+    GenServer.cast(:todo_server, {:delete_entry, entry_id})
   end
 end

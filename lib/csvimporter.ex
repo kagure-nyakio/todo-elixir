@@ -1,11 +1,11 @@
 defmodule TodoList.CsvImporter do
-
+  alias TodoList.Impl.Todo
   def todo_from_csv(file) do
     file
       |>open_file()
       |> parse_todo()
       |> Enum.map(&parse_to_entry/1)
-      |> TodoList.new()
+      |> Todo.new()
   end
 
   defp open_file(file) do

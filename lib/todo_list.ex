@@ -1,23 +1,13 @@
 defmodule TodoList do
-  alias TodoList.Impl.Todo
-  alias TodoList.Type
+  alias TodoList.Runtime.Server
 
-  @type todo  :: Todo.t 
-  @type date  :: Type.date
-  @type entry :: Type.entry
+  defdelegate new(), to: Server, as: :start
 
-  @spec new(list(entry)) :: todo
-  defdelegate new(entries \\ []), to: Todo
+  defdelegate add_entry(entry), to: Server
 
-  @spec add_entry(todo, entry) :: todo
-  defdelegate add_entry(todo_list, entry), to: Todo
+  defdelegate entries(date), to: Server
 
-  @spec entries(todo, date) :: list(entry)
-  defdelegate entries(todo_list, date), to: Todo
+  defdelegate update_entry(entry_id, updater_fun), to: Server
 
-  @spec update_entry(todo, integer, fun) :: todo
-  defdelegate update_entry(todo_list, entry_id, updater_fun), to: Todo
-
-  @spec delete_entry(todo, integer) :: todo 
-  defdelegate delete_entry(todo_list, entry_id), to: Todo
+  defdelegate delete_entry(entry_id), to: Server
 end
